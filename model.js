@@ -10,9 +10,16 @@ const laboratoryModel = {
   2: { name: 'lab2', adress: 'Rua 2 - Centro - São Paulo', status: 'ativo' }
 }
 
+const laboratoryExamModel = {
+  1: { laboratory: 1, exam: 2 },
+  2: { laboratory: 2, exam: 2 },
+  2: { laboratory: 2, exam: 1 }
+}
+
 module.exports = {
   exam: repository(examModel),
-  laboratory: repository(laboratoryModel)
+  laboratory: repository(laboratoryModel),
+  laboratoryExam: repository(laboratoryExamModel)
 }
 
 
@@ -51,6 +58,7 @@ function repository (db) {
 
   function readAll (cb) {
     const result = []
+    console.log(db)
     for (const [key, value] of Object.entries(db)) {
       result.push({id: key, ...value})
     }

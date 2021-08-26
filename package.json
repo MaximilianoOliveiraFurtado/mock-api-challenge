@@ -16,12 +16,15 @@
   "license": "ISC",
   "dependencies": {
     "fastify": "^3.0.0",
-    "fastify-plugin": "^3.0.0",
     "fastify-autoload": "^3.3.1",
-    "fastify-sensible": "^3.1.0",
-    "fastify-cli": "^2.13.0"
+    "fastify-cli": "^2.13.0",
+    "fastify-formbody": "^5.1.0",
+    "fastify-multipart": "^4.0.7",
+    "fastify-plugin": "^3.0.0",
+    "fastify-sensible": "^3.1.0"
   },
   "devDependencies": {
+    "@types/busboy": "^0.2.4",
     "tap": "^15.0.9"
   }
 }
