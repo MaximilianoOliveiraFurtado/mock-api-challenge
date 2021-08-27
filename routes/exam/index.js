@@ -10,6 +10,34 @@ const del = promisify(exam.del)
 
 module.exports = async (fastify, opts) => {
   const { notFound } = fastify.httpErrors
+  const examSchema = {
+    schema: {
+      body: {
+        type: 'object',
+        required: ['data'],
+        additionalProperties: false,
+        properties: {
+          data: {
+            type: 'object',
+            required: ['name', 'type', 'status'],
+            additionalProperties: false,
+            properties: {
+              name: {type:'string'},
+              type: {
+                type:'string',
+                enum: ['analise clinica', 'imagem']
+              },
+              status: {
+                type: 'string',
+                enum: ['ativo', 'inativo']
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
 
   fastify.post('/', async (request, reply) => {
     const { data } = request.body

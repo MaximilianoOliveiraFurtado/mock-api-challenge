@@ -58,7 +58,6 @@ function repository (db) {
 
   function readAll (cb) {
     const result = []
-    console.log(db)
     for (const [key, value] of Object.entries(db)) {
       result.push({id: key, ...value})
     }
