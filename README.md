@@ -24,8 +24,8 @@ ou com hot reload
 ```sh
 # entre na pasta do projeto
 $ cd mock-api-challenge
-# rode o npm start
-$ npm dev
+# rode o npm run dev
+$ npm run dev
 ```
 
 ## Exemplos de requests
