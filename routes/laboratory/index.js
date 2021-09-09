@@ -2,8 +2,8 @@
 const { promisify } = require('util')
 const { laboratory, laboratoryExam } = require('../../model')
 const { uid } = laboratory
-const read = promisify(laboratory.read)
-const readAll = promisify(laboratory.readAll)
+const read = promisify(laboratory.readLaboratory)
+const readAll = promisify(laboratory.readAllLaboratory)
 const create = promisify(laboratory.create)
 const update = promisify(laboratory.update)
 const del = promisify(laboratory.del)
@@ -13,7 +13,7 @@ const laboratoryExamReadAll = promisify(laboratoryExam.readAll)
 
 module.exports = async (fastify, opts) => {
   const { notFound } = fastify.httpErrors
-  const laboratorySchema = {
+  const laboratoryUpdateSchema = {
     schema: {
       body: {
         type: 'object',
@@ -31,6 +31,27 @@ module.exports = async (fastify, opts) => {
                 type: 'string',
                 enum: ['ativo', 'inativo']
               }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  const laboratoryCreateSchema = {
+    schema: {
+      body: {
+        type: 'object',
+        required: ['data'],
+        additionalProperties: false,
+        properties: {
+          data: {
+            type: 'object',
+            required: ['name', 'adress'],
+            additionalProperties: false,
+            properties: {
+              name: {type:'string'},
+              adress: {type:'string'}
             }
           }
         }
@@ -58,7 +79,7 @@ module.exports = async (fastify, opts) => {
     }
   }
 
-  fastify.post('/', laboratorySchema, async (request, reply) => {
+  fastify.post('/', laboratoryCreateSchema, async (request, reply) => {
     const { data } = request.body
     const id = uid()
     await create(id, data)
@@ -66,7 +87,7 @@ module.exports = async (fastify, opts) => {
     return { id }
   })
 
-  fastify.put('/:id', laboratorySchema, async (request, reply) => {
+  fastify.put('/:id', laboratoryUpdateSchema, async (request, reply) => {
     const { id } = request.params
     const { data } = request.body
     try {
@@ -84,16 +105,15 @@ module.exports = async (fastify, opts) => {
     data.laboratory = parseInt(idLaboratory)
     const laboratoryExamList = await laboratoryExamReadAll()
     const laboratoryExamFiltred = laboratoryExamList.filter(
-      (item) => item.laboratory === parseInt(data.laboratory) &&  item.exam == parseInt(data.exam)
+      (item) => parseInt(item.laboratory) === parseInt(data.laboratory) &&  parseInt(item.exam) === parseInt(data.exam)
     )
     if(laboratoryExamFiltred.length > 0 ){
       reply.code(409)
       return { error: 'already exists' }
     }
-    const id = uid()
+    const id = laboratoryExam.uid()
     await laboratoryExamCreate(id, data)
-    reply.code(201)
-    return { id }
+    reply.code(204)
   })
 
   fastify.post('/:idLaboratory/disable-exam', laboratoryExamSchema, async (request, reply) => {

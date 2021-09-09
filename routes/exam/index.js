@@ -10,7 +10,7 @@ const del = promisify(exam.del)
 
 module.exports = async (fastify, opts) => {
   const { notFound } = fastify.httpErrors
-  const examSchema = {
+  const examUpdateSchema = {
     schema: {
       body: {
         type: 'object',
@@ -38,8 +38,32 @@ module.exports = async (fastify, opts) => {
     }
   }
 
+  const examCreateSchema = {
+    schema: {
+      body: {
+        type: 'object',
+        required: ['data'],
+        additionalProperties: false,
+        properties: {
+          data: {
+            type: 'object',
+            required: ['name', 'type'],
+            additionalProperties: true,
+            properties: {
+              name: {type:'string'},
+              type: {
+                type:'string',
+                enum: ['analise clinica', 'imagem']
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
-  fastify.post('/', async (request, reply) => {
+
+  fastify.post('/', examCreateSchema, async (request, reply) => {
     const { data } = request.body
     const id = uid()
     await create(id, data)
@@ -47,17 +71,17 @@ module.exports = async (fastify, opts) => {
     return { id }
   })
 
-  fastify.post('/:id/update', async (request, reply) => {
-    const { id } = request.params
-    const { data } = request.body
-    try {
-      await update(id, data)
-      reply.code(204)
-    } catch (err) {
-      if (err.message === 'not found') throw notFound()
-      throw err
-    }
-  })
+  // fastify.post('/:id/update', async (request, reply) => {
+  //   const { id } = request.params
+  //   const { data } = request.body
+  //   try {
+  //     await update(id, data)
+  //     reply.code(204)
+  //   } catch (err) {
+  //     if (err.message === 'not found') throw notFound()
+  //     throw err
+  //   }
+  // })
 
   fastify.get('/:id', async (request, reply) => {
     const { id } = request.params
@@ -78,7 +102,7 @@ module.exports = async (fastify, opts) => {
     }
   })
 
-  fastify.put('/:id', async (request, reply) => {
+  fastify.put('/:id', examUpdateSchema, async (request, reply) => {
     const { id } = request.params
     const { data } = request.body
     try {
