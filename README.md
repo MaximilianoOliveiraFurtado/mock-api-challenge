@@ -7,7 +7,7 @@ mock-api-challenge necessita da versão 10.16+ do NodeJS instalada em sua maquin
 ```sh
 # entre na pasta do projeto
 $ cd mock-api-challenge
-# instale as dependencias utilizando o Yarn
+# instale as dependencias utilizando o npm
 $ npm install
 ```
 
@@ -16,7 +16,7 @@ $ npm install
 ```sh
 # entre na pasta do projeto
 $ cd mock-api-challenge
-# rode o yarn start
+# rode o npm start
 $ npm start
 ```
 ou com hot reload
@@ -24,7 +24,7 @@ ou com hot reload
 ```sh
 # entre na pasta do projeto
 $ cd mock-api-challenge
-# rode o yarn start
+# rode o npm start
 $ npm dev
 ```
 
