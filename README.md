@@ -28,7 +28,7 @@ $ cd mock-api-challenge
 $ npm run dev
 ```
 
-## Exemplos de requests
+## Examples of requests
 
 ```sh
 
